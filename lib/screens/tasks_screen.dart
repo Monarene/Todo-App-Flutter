@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoeyy/models/task_data.dart';
+import 'package:todoeyy/models/tasks.dart';
 import 'package:todoeyy/widgets/tasks_list.dart';
 
 import 'add_task_screen.dart';
 
-class TaskApp extends StatelessWidget {
+class TaskApp extends StatefulWidget {
+  @override
+  _TaskAppState createState() => _TaskAppState();
+}
+
+class _TaskAppState extends State<TaskApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +21,16 @@ class TaskApp extends StatelessWidget {
         child: Icon(Icons.add),
         onPressed: () {
           showModalBottomSheet(
-              context: context, builder: (context) => AddTaskScreen());
+              context: context,
+              builder: (context) => AddTaskScreen((newTaskTitle) {
+//                    setState(() {
+//                      tasks.add(Task(
+//                        name: newTaskTitle,
+//                      ));
+//                    });
+
+                    Navigator.pop(context);
+                  }));
         },
       ),
       body: Column(
@@ -45,7 +62,7 @@ class TaskApp extends StatelessWidget {
                       color: Colors.white),
                 ),
                 Text(
-                  "12 Tasks",
+                  "${Provider.of<TaskData>(context).tasks.length} Tasks",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -62,7 +79,7 @@ class TaskApp extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0))),
-              child: TasksList(),
+              child: TasksList(tasks),
             ),
           )
         ],
